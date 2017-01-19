@@ -23,6 +23,8 @@ namespace loft { namespace math {
 		static Matrix4 rotation(float angle, const Vector3& axis);
 		static Matrix4 scale(const Vector3& scale);
 
+		Matrix4& invert();
+
 
 		Matrix4& multiply(const Matrix4& other);
 		friend Matrix4 operator * (Matrix4 left, const Matrix4 right );

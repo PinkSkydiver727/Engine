@@ -6,6 +6,7 @@
 #include "Buffers\VertexArray.h"
 #include "../Math/math.h"
 #include "Shader.h"
+#include "Texture.h"
 
 namespace loft { namespace graphics {
 	using namespace math;
@@ -14,6 +15,9 @@ namespace loft { namespace graphics {
 	{
 		Vector3 vertex;
 		//Vector4 color;
+
+		Vector2 uv;
+		float texID;
 		unsigned int color;
 	};
 
@@ -23,13 +27,21 @@ namespace loft { namespace graphics {
 	protected:
 		Vector3 m_Position;
 		Vector2 m_Size;
-		Vector4 m_Color;
+		unsigned int m_Color;
+		std::vector<Vector2> m_UV;
+		Texture* m_Texture;
+
 	protected:
-		Renderable2D() {};
-	public:
-		Renderable2D(Vector3 position, Vector2 size, Vector4 color)
-			:	m_Position(position), m_Size(size), m_Color(color)
+		Renderable2D() 
+			: m_Texture(nullptr)
 		{
+			setUVDefaults();
+		};
+	public:
+		Renderable2D(Vector3 position, Vector2 size, unsigned int color)
+			:	m_Position(position), m_Size(size), m_Color(color), m_Texture(nullptr)
+		{
+			setUVDefaults();
 			/*m_VertexArray = new VertexArray();
 			GLfloat vertices[] =
 			{
@@ -65,9 +77,37 @@ namespace loft { namespace graphics {
 			renderer->submit(this);
 		}
 
+		void setColor(unsigned int color)
+		{
+
+		}
+
+		void setColor(const math::Vector4& color)
+		{
+			int r = color.x * 255.0f;
+			int g = color.y * 255.0f;
+			int b = color.z * 255.0f;
+			int a = color.w * 255.0f;
+
+			m_Color = (a << 24 | b << 16 | g << 8 | r);
+		}
+
 		inline const Vector3& getPosition() const { return m_Position; };
 		inline const Vector2& getSize() const { return m_Size; };
-		inline const Vector4& getColor() const { return m_Color; };
+		inline const unsigned int getColor() const { return m_Color; };
+		inline const std::vector<Vector2>& getUV() const { return m_UV; };
+
+		inline const GLuint getTextureID() const { return m_Texture == nullptr ? 0 : m_Texture->getID(); };
+
+	private:
+		void setUVDefaults()
+		{
+			m_UV.push_back(Vector2(0, 0));
+			m_UV.push_back(Vector2(0, 1));
+			m_UV.push_back(Vector2(1, 1));
+			m_UV.push_back(Vector2(1, 0));
+		}
+
 	};
 
 } }

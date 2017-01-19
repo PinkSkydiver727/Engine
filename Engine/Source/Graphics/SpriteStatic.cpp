@@ -3,7 +3,7 @@
 namespace loft { namespace graphics {
 
 	SpriteStatic::SpriteStatic(float x, float y, float width, float height, const math::Vector4& color, Shader& shader)
-		: Renderable2D(math::Vector3(x, y, 0),math::Vector2(width, height), color), m_Shader(shader)
+		: Renderable2D(math::Vector3(x, y, 0),math::Vector2(width, height), 0xffffff), m_Shader(shader)
 	{
 		m_VertexArray = new VertexArray();
 		GLfloat vertices[] =

@@ -20,7 +20,11 @@ namespace loft { namespace graphics {
 		bool m_Closed;
 
 		bool m_Keys[1024];
+		bool m_KeyState[1024];
+		bool m_KeyTyped[1024];
 		bool m_MouseButtons[32];
+		bool m_MouseState[32];
+		bool m_MouseClicked[32];
 		double mx, my;
 	
 	public:
@@ -33,11 +37,14 @@ namespace loft { namespace graphics {
 		int getWidth() const { return m_Width; }
 		int getHeight() const { return m_Height; }
 		bool isKeyPressed(unsigned int keycode) const;
+		bool isKeyTyped(unsigned int keycode) const;
 		bool isMouseButtonPressed(unsigned int button) const;
+		bool isMouseButtonClicked(unsigned int button) const;
 		void getMousePosition(double& x, double& y) const;
 
 	private:
 		bool init();
+		friend static void  window_resize(GLFWwindow* window, int width, int height);
 		friend static void  key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 		friend static void  mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 		friend static void  cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
