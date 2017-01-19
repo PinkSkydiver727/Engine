@@ -3,7 +3,6 @@
 namespace loft { namespace graphics {
 	
 
-	void window_resize(GLFWwindow *window, int width, int height);
 
 	Window::Window(const char *title, int width, int height)
 	{
@@ -18,10 +17,14 @@ namespace loft { namespace graphics {
 		for (int i = 0; i < 1024; i++)
 		{
 			m_Keys[i] = false;
+			m_KeyState[i] = false;
+			m_KeyTyped[i] = false;
 		}
 		for (int i = 0; i < 32; i++)
 		{
 			m_MouseButtons[i] = false;
+			m_MouseState[i] = false;
+			m_MouseClicked[i] = false;
 		}
 
 	}
@@ -46,7 +49,7 @@ namespace loft { namespace graphics {
 
 		glfwMakeContextCurrent(m_Window); 
 		glfwSetWindowUserPointer(m_Window, this);
-		glfwSetWindowSizeCallback(m_Window, window_resize);
+		glfwSetFramebufferSizeCallback(m_Window, window_resize);
 		glfwSetKeyCallback(m_Window, key_callback);
 		glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
 		glfwSetCursorPosCallback(m_Window, cursor_position_callback);
@@ -73,6 +76,15 @@ namespace loft { namespace graphics {
 		return m_Keys[keycode];
 	}
 
+	bool Window::isKeyTyped(unsigned int keycode) const
+	{
+		if (keycode >= 1024)
+		{
+			return false;
+		}
+		return m_KeyTyped[keycode];
+	}
+
 	bool Window::isMouseButtonPressed(unsigned int button) const
 	{
 		if (button >= 32)
@@ -80,6 +92,15 @@ namespace loft { namespace graphics {
 			return false;
 		}
 		return m_MouseButtons[button];
+	}
+
+	bool Window::isMouseButtonClicked(unsigned int button) const
+	{
+		if (button >= 32)
+		{
+			return false;
+		}
+		return m_MouseClicked[button];
 	}
 
 	void Window::getMousePosition(double& x, double& y) const
@@ -102,6 +123,30 @@ namespace loft { namespace graphics {
 
 	void Window::update() 
 	{
+		for (int i = 0; i < 1024; i++)
+		{
+			//Set pressed keys
+			if (m_Keys[i])
+			{
+				m_KeyTyped[i] = m_Keys[i] && !m_KeyState[i];
+			}
+		}
+		memcpy(m_KeyState, m_Keys, 1024);
+
+		//set clicked mouse buttons 
+		for (int i = 0; i < 32; i++)
+		{
+			//
+			if (m_MouseButtons[i])
+			{
+				m_MouseClicked[i] = m_MouseButtons[i] && !m_MouseState[i];
+			}
+		}
+
+		
+		memcpy(m_MouseState, m_MouseButtons, 32);
+		
+
 		GLenum error = glGetError();
 		if (error != GL_NO_ERROR)
 		{
@@ -117,6 +162,9 @@ namespace loft { namespace graphics {
 	void window_resize(GLFWwindow *window, int width, int height)
 	{
 		glViewport(0, 0, width, height);
+		Window* win = (Window*)glfwGetWindowUserPointer(window);
+		win->m_Width = width;
+		win->m_Height = height;
 	}
 
 	void  key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)

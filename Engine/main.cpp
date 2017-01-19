@@ -1,6 +1,8 @@
 
 #include "Source/Graphics/window.h"
 #include "Source/Graphics/Shader.h"
+#include "Source\Utilities\Timer.h"
+
 #include "Source/Math/math.h"
 #include "Source\Graphics\Buffers\VertexArray.h"
 #include "Source\Graphics\Buffers\IndexBuffer.h"
@@ -12,15 +14,36 @@
 #include "Source\Graphics\Layers\Group.h"
 
 #include "Source\Graphics\Sprite.h"
-#include "Source\Utilities\Timer.h"
 #include <time.h>
 #include <FreeImage.h>
+#include "Source\Graphics\Texture.h"
+#include <ft2build.h>
+#include FT_FREETYPE_H 
+#include <gorilla\ga.h>
+#include <gorilla\gau.h>
 
-#define TEST_50K_SPRITES 0
 
+#define TEST_50K_SPRITES 1
+#if 0
+int main()
+{
+	using namespace loft;
+
+	while (true)
+	{
+		int width, height;
+		BYTE* image = load_image("memtest.png", &width, &height);
+		std::cout << "Loaded image" << width << ", " << height << std::endl;
+		delete[] image;
+	};
+}
+#endif
 #if 1
 int main() //I am a joke
 {
+	gc_initialize(0);
+
+	srand(time(NULL));
 	using namespace loft;
 	using namespace graphics;
 	using namespace math;
@@ -34,40 +57,62 @@ int main() //I am a joke
 	Matrix4 ortho = Matrix4::orthographic(0.0, 16.0, 0.0f, 9.0f, -1.0f, 1.0f);
 
 	Shader* s = new Shader("Source/Shaders/basic.vert", "Source/Shaders/basic.frag");
-	Shader* s2 = new Shader("Source/Shaders/basic.vert", "Source/Shaders/basic.frag");
 	Shader& shader = *s;
-	Shader& shader2 = *s2;
 	
 	shader.enable();
-	shader2.enable();
 
 	shader.setUniform2f("light_pos", Vector2(4.0f, 1.5f));
-	shader2.setUniform2f("light_pos", Vector2(4.0f, 1.5f));
 
 
-	TileLayer layer2(&shader);
-	TileLayer layer(&shader2);
+	TileLayer layer(&shader);
 #if TEST_50K_SPRITES
-	for (float y = -9.0f; y < 9.0f; y += 0.2)
-	{
-		for (float x = -16.0f; x < 16.0f; x += 0.2)
-		{
-			layer.add(new Sprite(x, y, 4.0f, 4.0f, math::Vector4((rand() % 1000 / 1000.0f), 0, 1, 1)));
-		}
-	}
 #else
-	Group* group = new Group(math::Matrix4::translation(math::Vector3(5.0f, 1.0f, 0.0f)));
-	group->add(new Sprite(0, 0, 6.0f, 4.0f, math::Vector4((rand() % 1000 / 1000.0f), 0, 1, 1)));
-	group->add(new Sprite(0.5, 0.5, 5.0f, 2.0f, math::Vector4((rand() % 1000 / 1000.0f), 0, 0, 1)));
+	//Group* group = new Group(math::Matrix4::translation(math::Vector3(5.0f, 1.0f, 0.0f)));
+//	group->add(new Sprite(0, 0, 6.0f, 4.0f, math::Vector4((rand() % 1000 / 1000.0f), 0, 1, 1)));
+//	group->add(new Sprite(0.5, 0.5, 5.0f, 2.0f, math::Vector4((rand() % 1000 / 1000.0f), 0, 0, 1)));
 
 		
-	layer.add(group);
+	//layer.add(group);
 	
 	//layer2.add(new Sprite(-2.0f, -2.0f, 4.0f, 4.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f)));
 
 
 
 #endif
+
+
+	Texture* textures[] =
+	{
+		new Texture("test.png"),
+		new Texture("test2.png"),
+		new Texture("test3.png")
+	};
+	for (float y = -11.0f; y < 11.0f; y ++)
+	{
+		for (float x = -16.0f; x < 16.0f; x ++)
+		{
+			int r = rand() % 255;
+			int col = 0xffff00 << 8 | r;
+			//layer.add(new Sprite(x, y, 0.9f, 0.9f, math::Vector4((rand() % 1000 / 1000.0f), 0, 1, 1)));
+			if (rand() % 4 == 0)
+			{
+				layer.add(new Sprite(x, y, 0.9f, 0.9f, col));
+			}
+			else
+			{
+				layer.add(new Sprite(x, y, 0.9f, 0.9f, textures[rand() % 3]));
+			}
+		}
+	}
+
+	GLint texIDs[] =
+	{
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+	};
+	
+	shader.enable();
+	shader.setUniform1iv("textures", texIDs, 10);
+	shader.setUniformMat4("pr_matrix", Matrix4::orthographic(-16.0f, 16.0f, -11.0f, 11.0f, -1.0f, 1.0f));
 	Timer timer, time;
 	float t = 0;
 	unsigned int frames = 0;
@@ -75,16 +120,32 @@ int main() //I am a joke
 	{
 		timer.reset();
 		window.clear();
+		shader.enable();
 		double x, y;
 		window.getMousePosition(x, y);
-		shader.enable();
-		shader.setUniform2f("light_pos", Vector2((float)(x * 32.0f / 800.0f - 16.0f), (float)(9.0f - y * 18.0f / 600.0f)));
-		shader2.enable();
-		shader2.setUniform2f("light_pos", Vector2((float)(x * 32.0f / 800.0f - 16.0f), (float)(9.0f - y * 18.0f / 600.0f)));
+		shader.setUniform2f("light_pos", Vector2((float)(x * 32.0f / window.getWidth() - 16.0f), (float)(9.0f - y * 18.0f / window.getHeight())));
 
-		layer.render();
+		layer.render(); 
+		if(window.isKeyTyped(GLFW_KEY_K))
+		{
+			std::cout << "K" << std::endl;
+		}
 
-		//layer2.render();
+		if (window.isKeyTyped(GLFW_KEY_K))
+		{
+			std::cout << "works" << std::endl;
+		}
+
+		if (window.isMouseButtonClicked(GLFW_MOUSE_BUTTON_LEFT))
+		{
+			std::cout << "M" << std::endl;
+		}
+
+		if (window.isMouseButtonClicked(GLFW_MOUSE_BUTTON_LEFT))
+		{
+			std::cout << "M works" << std::endl;
+		}
+
 		window.update();
 		frames++;
 		if (time.elapsed() - t > 1.0f)
@@ -97,11 +158,16 @@ int main() //I am a joke
 
 	}
 	
+	for (int i = 0; i < 3; i++)
+	{
+		delete textures[i];
+	}
+
 	return 0;
 	
 }
-#else
 
+#else
 int main()
 {
 	const char* filename = "test.png";

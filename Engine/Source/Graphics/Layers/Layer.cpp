@@ -36,7 +36,7 @@ namespace loft { namespace graphics {
 	{
 		m_Shader->enable();
 		m_Renderer->begin();
-		m_Renderer->push(math::Matrix4::translation(Vector3(1, 1, 0)));
+		//m_Renderer->push(math::Matrix4::translation(Vector3(1, 1, 0)));
 		for (Renderable2D* renderable : m_Renderables)
 		{
 			renderable->submit(m_Renderer);

@@ -3,7 +3,7 @@
 
 namespace loft {
 
-	static BYTE* load_image(const char* filename, unsigned int* width, unsigned int* height)
+	static BYTE* load_image(const char* filename, GLsizei* width, GLsizei* height)
 	{
 		// image format
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
@@ -29,11 +29,16 @@ namespace loft {
 			return nullptr;
 
 		//retrieve the image data
-		BYTE* result = FreeImage_GetBits(dib);
-	
+		BYTE* pixels = FreeImage_GetBits(dib);
+		
 		*width = FreeImage_GetWidth(dib);
 		*height = FreeImage_GetHeight(dib);
-		
+		int bits = FreeImage_GetBPP(dib);
+
+		int size = *width * *height * (bits / 8);
+		BYTE* result = new BYTE[size];
+		memcpy(result, pixels, size);
+		FreeImage_Unload(dib);
 		return result;
 	}
 }

@@ -9,6 +9,7 @@ namespace loft { namespace graphics {
 		math::Matrix4 m_Transformations;
 	public:
 		Group(const math::Matrix4& transform);
+		~Group();
 		void add(Renderable2D* renderable);
 		void submit(Renderer2D* renderer) override;
 	};
