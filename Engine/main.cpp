@@ -17,13 +17,21 @@
 #include <time.h>
 #include <FreeImage.h>
 #include "Source\Graphics\Texture.h"
-#include <ft2build.h>
-#include FT_FREETYPE_H 
-#include <gorilla\ga.h>
-#include <gorilla\gau.h>
+#include "Source\Audio\SoundManager.h"
 
 
 #define TEST_50K_SPRITES 1
+// test audio
+
+
+
+
+
+
+
+
+
+
 #if 0
 int main()
 {
@@ -41,18 +49,21 @@ int main()
 #if 1
 int main() //I am a joke
 {
-	gc_initialize(0);
 
 	srand(time(NULL));
 	using namespace loft;
 	using namespace graphics;
 	using namespace math;
+	using namespace audio;
 
 	Window window("Loftie!", 800, 600);
 	glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
+	SoundManager::add(new Sound("Win", "test.wav"));
+
+	SoundManager::get("Win")->play();
 
 	Matrix4 ortho = Matrix4::orthographic(0.0, 16.0, 0.0f, 9.0f, -1.0f, 1.0f);
 
@@ -126,6 +137,12 @@ int main() //I am a joke
 		shader.setUniform2f("light_pos", Vector2((float)(x * 32.0f / window.getWidth() - 16.0f), (float)(9.0f - y * 18.0f / window.getHeight())));
 
 		layer.render(); 
+		if (window.isKeyPressed(GLFW_KEY_P))
+		{
+			SoundManager::get("Win")->play();
+		}
+
+
 		if(window.isKeyTyped(GLFW_KEY_K))
 		{
 			std::cout << "K" << std::endl;
@@ -167,7 +184,7 @@ int main() //I am a joke
 	
 }
 
-#else
+#elif 0
 int main()
 {
 	const char* filename = "test.png";

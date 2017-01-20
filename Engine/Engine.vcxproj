@@ -29,6 +29,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>true</CLRSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -69,12 +70,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\FreeImage\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\GorillaAudio\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\FreeImage\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\GorillaAudio\bin\win32\Debug;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\$(Configuration)\Intermediates\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)Dependencies\GLFWx64\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\FreeImage\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\irrKlang\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Dependencies\GLFWx64\lib-vc2015;$(SolutionDir)Dependencies\GLEWx64\lib;$(SolutionDir)Dependencies\FreeImagex64\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\irrKlang\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\$(Configuration)\Intermediates\</IntDir>
   </PropertyGroup>
@@ -89,9 +92,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;__cplusplus;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;FreeImage.lib;gorillaD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -102,7 +106,7 @@
       <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;__cplusplus;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;FreeImage.lib;freetype271.lib;gorillaD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;FreeImage.lib;freetype271.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -140,6 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Source\Audio\Sound.cpp" />
+    <ClCompile Include="Source\Audio\SoundManager.cpp" />
     <ClCompile Include="Source\Graphics\BatchRenderer2D.cpp" />
     <ClCompile Include="Source\Graphics\Buffers\Buffer.cpp" />
     <ClCompile Include="Source\Graphics\Buffers\IndexBuffer.cpp" />
@@ -161,6 +167,8 @@
     <ClCompile Include="Source\Math\Vector4.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Audio\Sound.h" />
+    <ClInclude Include="Source\Audio\SoundManager.h" />
     <ClInclude Include="Source\Graphics\BatchRenderer2d.h" />
     <ClInclude Include="Source\Graphics\Buffers\Buffer.h" />
     <ClInclude Include="Source\Graphics\Buffers\IndexBuffer.h" />

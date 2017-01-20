@@ -1,4 +1,5 @@
 #include "window.h"
+#include "../Audio/SoundManager.h"
 
 namespace loft { namespace graphics {
 	
@@ -13,7 +14,7 @@ namespace loft { namespace graphics {
 		{
 			glfwTerminate();
 		}
-
+		audio::SoundManager::init();
 		for (int i = 0; i < 1024; i++)
 		{
 			m_Keys[i] = false;
@@ -30,6 +31,7 @@ namespace loft { namespace graphics {
 	}
 	Window::~Window()
 	{
+		audio::SoundManager::clean();
 		glfwTerminate();
 	}
 	bool Window::init()
