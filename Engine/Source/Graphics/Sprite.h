@@ -7,7 +7,8 @@ namespace loft { namespace graphics {
 
 	class Sprite : public Renderable2D
 	{
-	private:
+	public:
+		math::Vector3& position;
 
 	public:
 		Sprite(float x, float y, float width, float height, unsigned int color);

@@ -12,9 +12,8 @@ namespace loft { namespace graphics {
 		math::Matrix4 m_ProjectionMatrix;
 	public:
 		Layer();
-	protected:
-		Layer(Renderer2D* renderer, Shader* shader, math::Matrix4 projectionMatrix);
 	public:
+		Layer(Renderer2D* renderer, Shader* shader, math::Matrix4 projectionMatrix);
 		virtual ~Layer();
 		virtual void add(Renderable2D* renderable);
 		virtual void render();

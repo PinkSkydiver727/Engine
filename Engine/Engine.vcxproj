@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Example\game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Source\Audio\Sound.cpp" />
     <ClCompile Include="Source\Audio\SoundManager.cpp" />
@@ -153,7 +154,6 @@
     <ClCompile Include="Source\Graphics\Label.cpp" />
     <ClCompile Include="Source\Graphics\Layers\Group.cpp" />
     <ClCompile Include="Source\Graphics\Layers\Layer.cpp" />
-    <ClCompile Include="Source\Graphics\Layers\TileLayer.cpp" />
     <ClCompile Include="Source\Graphics\Renderer2D.cpp" />
     <ClCompile Include="Source\Graphics\Shader.cpp" />
     <ClCompile Include="Source\Graphics\SimpleRenderer2D.cpp" />
@@ -165,6 +165,7 @@
     <ClCompile Include="Source\Math\Vector2.cpp" />
     <ClCompile Include="Source\Math\Vector3.cpp" />
     <ClCompile Include="Source\Math\Vector4.cpp" />
+    <ClCompile Include="TileLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Audio\Sound.h" />
@@ -176,7 +177,6 @@
     <ClInclude Include="Source\Graphics\Label.h" />
     <ClInclude Include="Source\Graphics\Layers\Group.h" />
     <ClInclude Include="Source\Graphics\Layers\Layer.h" />
-    <ClInclude Include="Source\Graphics\Layers\TileLayer.h" />
     <ClInclude Include="Source\Graphics\Renderable2D.h" />
     <ClInclude Include="Source\Graphics\Renderer2D.h" />
     <ClInclude Include="Source\Graphics\Shader.h" />
@@ -185,6 +185,7 @@
     <ClInclude Include="Source\Graphics\SpriteStatic.h" />
     <ClInclude Include="Source\Graphics\Texture.h" />
     <ClInclude Include="Source\Graphics\window.h" />
+    <ClInclude Include="Source\loft.h" />
     <ClInclude Include="Source\Math\math.h" />
     <ClInclude Include="Source\Math\math_fuctions.h" />
     <ClInclude Include="Source\Math\Matrix4.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Source\Utilities\FileSystem.h" />
     <ClInclude Include="Source\Utilities\ImageLoader.h" />
     <ClInclude Include="Source\Utilities\Timer.h" />
+    <ClInclude Include="TileLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shaders\basic.frag" />

@@ -93,7 +93,7 @@ namespace loft { namespace graphics {
 			}
 			if (!found) // Need to update texture slots
 			{
-				if (m_TextureSlots.size() >= 32) // too many active textures
+				if (m_TextureSlots.size() >= RENDERER_MAX_TEXTURES) // too many active textures
 				{
 					end(); // unmap buffer
 					flush(); // should update texture slots
@@ -161,6 +161,8 @@ namespace loft { namespace graphics {
 
 		//reset index count after everything is rendered
 		m_IndexCount = 0;
+
+		m_TextureSlots.clear();
 
 	}
 
