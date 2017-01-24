@@ -81,9 +81,6 @@
     <ClCompile Include="Source\Graphics\Layers\Layer.cpp">
       <Filter>Source Files\graphics\Layer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\Layers\TileLayer.cpp">
-      <Filter>Source Files\graphics\Layer</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Graphics\Label.cpp">
       <Filter>Source Files\graphics\Renderable</Filter>
     </ClCompile>
@@ -117,6 +114,12 @@
     <ClCompile Include="Source\Audio\SoundManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TileLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Example\game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Renderer2D.h">
@@ -147,9 +150,6 @@
       <Filter>Header Files\graphics\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\Layers\Layer.h">
-      <Filter>Header Files\graphics\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics\Layers\TileLayer.h">
       <Filter>Header Files\graphics\Layers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\SpriteStatic.h">
@@ -201,6 +201,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Audio\SoundManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TileLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\loft.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
